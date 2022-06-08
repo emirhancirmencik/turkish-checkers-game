@@ -1,38 +1,74 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.board{
+  height: 600px;
+  width: 600px;
+  background-color: green;
+  content: ' ';
+  margin: auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border: 5px black solid;
 }
 
-.App-link {
-  color: #61dafb;
+.App{
+  width: 100vw;
+  height: 100vh;
+  display:flex;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.square{
+  height: 75px;
+  width: 75px;
+  content: '';
+  display: flex;
+}
+
+.square-odd{
+  background-color: white;
+}
+
+.square-even{
+  background-color: rgb(59, 59, 59);
+  color:white
+}
+
+.checker{
+  content: '';
+  width: 50px;
+  height: 51px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.white-checker{
+  background-color: rgb(176, 176, 176);
+  border: 1px black solid;
+}
+
+.white-checker::before{
+  content: '';
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-top: -5px;
+  display: block;
+  background-color: rgb(222, 222, 222);
+  z-index: 1;
+  border: 1px solid black;
+}
+
+
+.black-checker{
+  background-color: rgb(30, 30, 30);
+  border: 1px rgb(0, 0, 0) solid;
+}
+
+.black-checker::before{
+  content: '';
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-top: -5px;
+  display: block;
+  background-color: rgb(75, 75, 75);
+  z-index: 1;
+  border: 1px solid rgb(0, 0, 0);
 }
