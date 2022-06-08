@@ -5,7 +5,13 @@
   content: ' ';
   margin: auto;
   display: flex;
+  flex-direction: column;
   border: 5px black solid;
+}
+
+.col{
+  display: flex;
+  
 }
 
 .App{
@@ -19,6 +25,7 @@
   width: 75px;
   content: '';
   display: flex;
+  
 }
 
 .square-odd{
@@ -34,13 +41,23 @@
   content: '';
   width: 50px;
   height: 51px;
+  padding-top:5px;
   border-radius: 50%;
   margin: auto;
+  background: transparent;
+  cursor: pointer;
+}
+
+.checker-container{
+  background:transparent;
+  margin: auto;
+  border-radius: 50%;
 }
 
 .white-checker{
   background-color: rgb(176, 176, 176);
   border: 1px black solid;
+  
 }
 
 .white-checker::before{
@@ -48,7 +65,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-top: -5px;
+  margin-top: -6px;
   display: block;
   background-color: rgb(222, 222, 222);
   z-index: 1;
