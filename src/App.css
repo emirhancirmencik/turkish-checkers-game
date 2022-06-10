@@ -1,7 +1,6 @@
 .board{
-  height: 600px;
-  width: 600px;
-  background-color: green;
+  height: 60vh;
+  width: 60vh;
   content: ' ';
   margin: auto;
   display: flex;
@@ -21,8 +20,8 @@
 }
 
 .square{
-  height: 75px;
-  width: 75px;
+  height: 7.5vh;
+  width: 7.5vh;
   content: ' ';
   display: flex;
   
@@ -39,9 +38,9 @@
 
 .checker{
   content: '';
-  width: 50px;
-  height: 51px;
-  padding-top:5px;
+  width: 5vh;
+  height: 5vh;
+  
   
   border-radius: 50%;
   margin: auto;
@@ -53,42 +52,49 @@
   background:transparent;
   margin: auto;
   border-radius: 50%;
+  z-index:9;
+  padding:1vh;
+  margin-top: 0.5vh!important;
 }
 
 .white-checker{
   background-color: rgb(176, 176, 176);
-  border: 1px black solid;
+  border: 0.1vh black solid;
+  position:relative
   
 }
 
-.white-checker::before{
+.white-checker::after{
   content: '';
-  width: 50px;
-  height: 50px;
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
-  margin-top: -6px;
+  margin-top: -0.8vh;
   display: block;
   background-color: rgb(222, 222, 222);
   z-index: 1;
-  border: 1px solid black;
+  border: 0.1vh solid black;
+ 
 }
 
 
 .black-checker{
   background-color: rgb(30, 30, 30);
-  border: 1px rgb(0, 0, 0) solid;
+  border: 0.1vh rgb(0, 0, 0) solid;
+ 
 }
 
-.black-checker::before{
+.black-checker::after{
   content: '';
-  width: 50px;
-  height: 50px;
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
-  margin-top: -6px;
+  margin-top: -0.8vh;
   display: block;
   background-color: rgb(75, 75, 75);;
   z-index: 1;
-  border: 1px solid black;
+  border: 0.1vh solid black;
+ 
 }
 
 .current-square{
@@ -101,5 +107,11 @@
 }
 
 .not-draggable{
-  cursor: default!important;
+  cursor: default;
+}
+
+.board-container{
+  margin:auto;
+  background-color: rgb(136, 135, 135);
+  padding: 10vh;
 }

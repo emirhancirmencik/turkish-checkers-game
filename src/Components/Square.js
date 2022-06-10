@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 function Square({ isWhite, checker, index, children, position }) {
   const currentChecker = useSelector((state) => state.game.currentChecker);
   const availableMoves = useSelector((state) => state.game.availableMoves);
+  const scoredChecker = useSelector((state) => state.game.scoredChecker);
+  const currentPlayer = useSelector((state) => state.game.currentPlayer);
   const dispatch = useDispatch();
   const [{ isDropping }, drop] = useDrop(() => ({
     accept: "checker",
@@ -24,6 +26,7 @@ function Square({ isWhite, checker, index, children, position }) {
   function handleOnClick() {
     if (availableMoves.includes(position)) {
       dispatch(move({ x: position[1], y: position[0] }));
+      console.log(currentPlayer);
     }
   }
 
