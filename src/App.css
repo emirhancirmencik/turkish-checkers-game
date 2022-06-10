@@ -77,10 +77,26 @@
  
 }
 
+.white-checker::before{
+  content: '';
+  width: 2.5vh;
+  height: 2.6vh;
+  border-radius: 50%;
+  top:0.4vh;
+  left:1.3vh;
+  display: block;
+  position: absolute;
+  background-color: rgb(182, 182, 182);
+  z-index: 4;
+  border: 0.1vh solid black;
+ 
+}
+
 
 .black-checker{
   background-color: rgb(30, 30, 30);
   border: 0.1vh rgb(0, 0, 0) solid;
+  position: relative;
  
 }
 
@@ -97,6 +113,21 @@
  
 }
 
+.black-checker::before{
+  content: '';
+  width: 2.5vh;
+  height: 2.6vh;
+  border-radius: 50%;
+  top:0.4vh;
+  left:1.3vh;
+  display: block;
+  position: absolute;
+  background-color: rgb(52, 52, 52);
+  z-index: 4;
+  border: 0.1vh solid black;
+ 
+}
+
 .current-square{
   background-color: rgb(227, 255, 157)!important;
 }
@@ -107,11 +138,19 @@
 }
 
 .not-draggable{
-  cursor: default;
+  cursor: default!important;
 }
 
 .board-container{
   margin:auto;
   background-color: rgb(136, 135, 135);
   padding: 10vh;
+}
+
+.black-checker.king::before{
+  background-color: rgb(115, 29, 29);
+}
+
+.white-checker.king::before{
+  background-color: rgb(115, 114, 29);
 }

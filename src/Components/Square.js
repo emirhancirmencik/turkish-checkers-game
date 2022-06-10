@@ -5,6 +5,7 @@ import {
   changeCurrentPlayer,
   setCurrentChecker,
   move,
+  makeKing,
   resetCurrentChecker,
 } from "../redux/game/GameSlice";
 
@@ -26,6 +27,8 @@ function Square({ isWhite, checker, index, children, position }) {
   function handleOnClick() {
     if (availableMoves.includes(position)) {
       dispatch(move({ x: position[1], y: position[0] }));
+      dispatch(makeKing({ position: position, color: currentPlayer }));
+
       console.log(currentPlayer);
     }
   }

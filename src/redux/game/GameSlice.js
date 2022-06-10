@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import checkSquare from "../../Game/Game";
+import checkSquare, {
+  availableMovesFunction,
+  kingScorePositions,
+} from "../../Game/Game";
 
 export const gameSlice = createSlice({
   name: "game",
@@ -15,18 +18,26 @@ export const gameSlice = createSlice({
       [-1, -1, -1, -1, -1, -1, -1, -1],
     ],
     currentPlayer: 1,
-    currentChecker: { position: "none", color: "none" },
+    currentChecker: { position: "none", color: "none", king: false },
     availableMoves: [],
     canGetScore: [],
     scoredChecker: "",
     loses: { white: 0, black: 0 },
+    kings: [],
+    kingScorePositions: [],
   },
   reducers: {
     changeCurrentPlayer: (state) => {
       if (state.scoredChecker.length !== 0) {
         console.log(state.scoredChecker, "changed");
         if (
-          checkSquare(state.scoredChecker, state.currentPlayer, state.board)
+          checkSquare(
+            state.scoredChecker,
+            state.currentPlayer,
+            state.board,
+            state.kings,
+            state.kingScorePositions
+          )
         ) {
           if (state.currentPlayer === 1) {
             state.currentPlayer = 0;
@@ -48,6 +59,29 @@ export const gameSlice = createSlice({
       if (state.currentPlayer === color) {
         state.currentChecker.position = pos;
         state.currentChecker.color = color;
+
+        if (state.kings.includes(pos)) {
+          state.currentChecker.king = true;
+        } else {
+          state.currentChecker.king = false;
+        }
+      }
+    },
+    makeKing: (state, action) => {
+      let position = action.payload.position;
+      let color = action.payload.color;
+
+      if (!state.kings.includes(position)) {
+        console.log(color);
+        if (Number(color) === 0 && Number(position[0]) === 7) {
+          console.log("2");
+          state.kings.push(position);
+        }
+      }
+      if (Number(color) === 1 && Number(position[0]) === 0) {
+        if (!state.kings.includes(position)) {
+          state.kings.push(position);
+        }
       }
     },
     resetCurrentChecker: (state) => {
@@ -56,138 +90,17 @@ export const gameSlice = createSlice({
       state.availableMoves = [];
     },
     setAvailableMoves: (state) => {
-      let availableMoves = [];
       let currentPosX = Number(state.currentChecker.position[1]);
       let currentPosY = Number(state.currentChecker.position[0]);
-      if (state.canGetScore.length === 0) {
-        if (state.currentPlayer === 0) {
-          if (currentPosY !== 7) {
-            if (state.board[currentPosY + 1][currentPosX] === -1) {
-              availableMoves.push(
-                String(currentPosY + 1) + String(currentPosX)
-              );
-            }
-          }
-          if (currentPosX !== 0) {
-            if (state.board[currentPosY][currentPosX - 1] === -1) {
-              availableMoves.push(
-                String(currentPosY) + String(currentPosX - 1)
-              );
-            }
-          }
-          if (currentPosX !== 7) {
-            if (state.board[currentPosY][currentPosX + 1] === -1) {
-              availableMoves.push(
-                String(currentPosY) + String(currentPosX + 1)
-              );
-            }
-          }
-        } else if (state.currentPlayer === 1) {
-          if (currentPosY !== 0) {
-            if (state.board[currentPosY - 1][currentPosX] === -1) {
-              availableMoves.push(
-                String(currentPosY - 1) + String(currentPosX)
-              );
-            }
-          }
-          if (currentPosX !== 0) {
-            if (state.board[currentPosY][currentPosX - 1] === -1) {
-              availableMoves.push(
-                String(currentPosY) + String(currentPosX - 1)
-              );
-            }
-          }
-          if (currentPosX !== 7) {
-            if (state.board[currentPosY][currentPosX + 1] === -1) {
-              availableMoves.push(
-                String(currentPosY) + String(currentPosX + 1)
-              );
-            }
-          }
-        }
-      } else {
-        if (
-          state.currentPlayer === 0 &&
-          state.canGetScore.includes(`${currentPosY}${currentPosX}`)
-        ) {
-          if (currentPosY !== 7) {
-            if (
-              state.board[currentPosY + 1][currentPosX] === 1 &&
-              currentPosY !== 6
-            ) {
-              if (state.board[currentPosY + 2][currentPosX] === -1) {
-                availableMoves.push(
-                  String(currentPosY + 2) + String(currentPosX)
-                );
-              }
-            }
-          }
-          if (currentPosX !== 0) {
-            if (
-              state.board[currentPosY][currentPosX - 1] === 1 &&
-              currentPosX !== 1
-            ) {
-              if (state.board[currentPosY][currentPosX - 2] === -1) {
-                availableMoves.push(
-                  String(currentPosY) + String(currentPosX - 2)
-                );
-              }
-            }
-          }
-          if (currentPosX !== 7) {
-            if (
-              state.board[currentPosY][currentPosX + 1] === 1 &&
-              currentPosX !== 6
-            ) {
-              if (state.board[currentPosY][currentPosX + 2] === -1) {
-                availableMoves.push(
-                  String(currentPosY) + String(currentPosX + 2)
-                );
-              }
-            }
-          }
-        } else if (
-          state.currentPlayer === 1 &&
-          state.canGetScore.includes(`${currentPosY}${currentPosX}`)
-        ) {
-          if (currentPosY !== 0) {
-            if (
-              state.board[currentPosY - 1][currentPosX] === 0 &&
-              currentPosY !== 1
-            ) {
-              if (state.board[currentPosY - 2][currentPosX] === -1) {
-                availableMoves.push(
-                  String(currentPosY - 2) + String(currentPosX)
-                );
-              }
-            }
-          }
-          if (currentPosX !== 0) {
-            if (
-              state.board[currentPosY][currentPosX - 1] === 0 &&
-              currentPosX !== 1
-            ) {
-              if (state.board[currentPosY][currentPosX - 2] === -1) {
-                availableMoves.push(
-                  String(currentPosY) + String(currentPosX - 2)
-                );
-              }
-            }
-          }
-          if (currentPosX !== 7) {
-            if (
-              state.board[currentPosY][currentPosX + 1] === 0 &&
-              currentPosX !== 6
-            ) {
-              if (state.board[currentPosY][currentPosX + 2] === -1) {
-                availableMoves.push(
-                  String(currentPosY) + String(currentPosX + 2)
-                );
-              }
-            }
-          }
-        }
-      }
+      let availableMoves = availableMovesFunction(
+        state.canGetScore,
+        state.currentPlayer,
+        currentPosX,
+        currentPosY,
+        state.board,
+        state.kings,
+        state.kingScorePositions
+      );
       state.availableMoves = availableMoves;
       console.log(availableMoves);
     },
@@ -222,10 +135,25 @@ export const gameSlice = createSlice({
           state.scoredChecker = `${targetPosY}${targetPosX}`;
 
           if (targetPosX - currentPosX === 0) {
-            if (state.currentPlayer === 1) {
-              state.board[currentPosY - 1][currentPosX] = -1;
+            if (state.kings.includes(`${currentPosY}${currentPosX}`)) {
+              if (targetPosY > currentPosY) {
+                state.board[targetPosY - 1][targetPosX] = -1;
+              } else {
+                state.board[targetPosY + 1][targetPosX] = -1;
+              }
+
+              let index = state.kings.findIndex(
+                (e) => e === `${currentPosY}${currentPosX}`
+              );
+
+              state.kings[index] = `${targetPosY}${targetPosX}`;
+              state.kingScorePositions = [];
             } else {
-              state.board[currentPosY + 1][currentPosX] = -1;
+              if (state.currentPlayer === 1) {
+                state.board[currentPosY - 1][currentPosX] = -1;
+              } else {
+                state.board[currentPosY + 1][currentPosX] = -1;
+              }
             }
           }
 
@@ -249,7 +177,9 @@ export const gameSlice = createSlice({
               !checkSquare(
                 state.scoredChecker,
                 state.currentPlayer,
-                state.board
+                state.board,
+                state.kings,
+                state.kingScorePositions
               )
             ) {
               if (state.currentPlayer === 1) {
@@ -271,6 +201,10 @@ export const gameSlice = createSlice({
       let a = action.payload;
       state.canGetScore.push(a);
     },
+    setKingScorePos: (state, action) => {
+      let pos = action.payload;
+      state.kingScorePositions.push(pos);
+    },
   },
 });
 
@@ -281,6 +215,8 @@ export const {
   resetCurrentChecker,
   move,
   setCanGetScore,
+  makeKing,
+  setKingScorePos,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

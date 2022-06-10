@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { useDrag, DragPreviewImage } from "react-dnd";
+import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import {
   changeCurrentPlayer,
+  makeKing,
   setCanGetScore,
   setCurrentChecker,
   setAvailableMoves,
@@ -10,13 +11,13 @@ import {
 
 import { useDispatch } from "react-redux";
 
-import checkSquare from "../Game/Game";
+import checkSquare, { kingScorePositions } from "../Game/Game";
 
 function Checker({ color, position }) {
   const dispatch = useDispatch();
   const currentPlayer = useSelector((state) => state.game.currentPlayer);
+  const kings = useSelector((state) => state.game.kings);
   const canGetScore = useSelector((state) => state.game.canGetScore);
-  const loses = useSelector((state) => state.game.loses);
   const board = useSelector((state) => state.game.board);
   const [{ isDragging }, drag] = useDrag({
     type: "checker",
@@ -35,23 +36,26 @@ function Checker({ color, position }) {
     if (currentPlayer === color) {
       dispatch(setCurrentChecker({ position: position, color: color }));
       dispatch(setAvailableMoves());
-      console.log(currentPlayer);
-      console.log(canGetScore);
-      console.log(loses);
     }
   }
 
   useEffect(() => {
     if (currentPlayer === color) {
-      if (checkSquare(position, color, board)) {
+      kingScorePositions.positions = [];
+      if (checkSquare(position, color, board, kings)) {
         dispatch(setCanGetScore(position));
       }
+      console.log(canGetScore);
     }
   }, [board]);
 
   return (
-    <div className="checker-container" ref={ref}>
-      <DragPreviewImage src={ref} />
+    <div
+      className="checker-container"
+      ref={ref}
+      onClick={() => _currentChecker()}
+      onDragStart={() => _currentChecker()}
+    >
       <div
         style={{
           opacity: isDragging ? 0 : 1,
@@ -61,15 +65,15 @@ function Checker({ color, position }) {
           paddingRight: 1,
           cursor: "pointer",
         }}
-        className={`${
+        className={`${kings.includes(position) && `king`} ${
+          color === 0 && Number(position[0]) === 7 && `king`
+        } ${color === 1 && Number(position[0]) === 0 && `king`} ${
           color === 0
             ? "checker black-checker"
             : color === 1
             ? "checker white-checker"
             : ""
         } ${currentPlayer !== color && "not-draggable"}`}
-        onClick={() => _currentChecker()}
-        onDragStart={() => _currentChecker()}
       ></div>
     </div>
   );
