@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Checker from "./Checker";
 import Square from "./Square";
-import {
-  changeCurrentPlayer,
-  setCurrentChecker,
-  isAbleToMove,
-} from "../redux/game/GameSlice";
 
 function Board() {
   const board = useSelector((state) => state.game.board);
-  const currentPlayer = useSelector((state) => state.game.currentPlayer);
-  const currentChecker = useSelector((state) => state.game.currentChecker);
-  const [currentSquare, setCurrentSquare] = useState("a");
 
   console.log(board);
   return (

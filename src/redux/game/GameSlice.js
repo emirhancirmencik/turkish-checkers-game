@@ -24,7 +24,6 @@ export const gameSlice = createSlice({
     scoredChecker: "",
     loses: { white: 0, black: 0 },
     kings: [],
-    kingScorePositions: [],
   },
   reducers: {
     changeCurrentPlayer: (state) => {
@@ -36,7 +35,7 @@ export const gameSlice = createSlice({
             state.currentPlayer,
             state.board,
             state.kings,
-            state.kingScorePositions
+            true
           )
         ) {
           if (state.currentPlayer === 1) {
@@ -72,9 +71,7 @@ export const gameSlice = createSlice({
       let color = action.payload.color;
 
       if (!state.kings.includes(position)) {
-        console.log(color);
         if (Number(color) === 0 && Number(position[0]) === 7) {
-          console.log("2");
           state.kings.push(position);
         }
       }
@@ -98,8 +95,7 @@ export const gameSlice = createSlice({
         currentPosX,
         currentPosY,
         state.board,
-        state.kings,
-        state.kingScorePositions
+        state.kings
       );
       state.availableMoves = availableMoves;
       console.log(availableMoves);
@@ -122,6 +118,14 @@ export const gameSlice = createSlice({
             state.currentPlayer = 1;
           }
 
+          if (state.kings.includes(`${currentPosY}${currentPosX}`)) {
+            let index = state.kings.findIndex(
+              (e) => e === `${currentPosY}${currentPosX}`
+            );
+            kingScorePositions.positions = [];
+            state.kings[index] = `${targetPosY}${targetPosX}`;
+          }
+
           state.currentChecker.position = "none";
           state.currentChecker.color = "none";
           state.availableMoves = [];
@@ -135,33 +139,57 @@ export const gameSlice = createSlice({
           state.scoredChecker = `${targetPosY}${targetPosX}`;
 
           if (targetPosX - currentPosX === 0) {
-            if (state.kings.includes(`${currentPosY}${currentPosX}`)) {
-              if (targetPosY > currentPosY) {
-                state.board[targetPosY - 1][targetPosX] = -1;
-              } else {
-                state.board[targetPosY + 1][targetPosX] = -1;
+            if (targetPosY > currentPosY) {
+              state.board[targetPosY - 1][targetPosX] = -1;
+              let isRemovedCheckerKing = state.kings.findIndex(
+                (e) => e === `${targetPosY - 1}${targetPosX}`
+              );
+              if (isRemovedCheckerKing !== -1) {
+                state.kings.splice(isRemovedCheckerKing, 1);
               }
-
+            } else {
+              state.board[targetPosY + 1][targetPosX] = -1;
+              let isRemovedCheckerKing = state.kings.findIndex(
+                (e) => e === `${targetPosY + 1}${targetPosX}`
+              );
+              if (isRemovedCheckerKing !== -1) {
+                state.kings.splice(isRemovedCheckerKing, 1);
+              }
+            }
+            if (state.kings.includes(`${currentPosY}${currentPosX}`)) {
               let index = state.kings.findIndex(
                 (e) => e === `${currentPosY}${currentPosX}`
               );
-
+              kingScorePositions.positions = [];
               state.kings[index] = `${targetPosY}${targetPosX}`;
-              state.kingScorePositions = [];
-            } else {
-              if (state.currentPlayer === 1) {
-                state.board[currentPosY - 1][currentPosX] = -1;
-              } else {
-                state.board[currentPosY + 1][currentPosX] = -1;
-              }
             }
           }
 
           if (targetPosY - currentPosY === 0) {
-            if (targetPosX > currentPosX)
-              state.board[currentPosY][currentPosX + 1] = -1;
-            else {
-              state.board[currentPosY][currentPosX - 1] = -1;
+            if (targetPosX > currentPosX) {
+              state.board[targetPosY][targetPosX - 1] = -1;
+              let isRemovedCheckerKing = state.kings.findIndex(
+                (e) => e === `${targetPosY}${targetPosX - 1}`
+              );
+              if (isRemovedCheckerKing !== -1) {
+                state.kings.splice(isRemovedCheckerKing, 1);
+              }
+            } else {
+              state.board[targetPosY][targetPosX + 1] = -1;
+              let isRemovedCheckerKing = state.kings.findIndex(
+                (e) => e === `${targetPosY}${targetPosX + 1}`
+              );
+              if (isRemovedCheckerKing !== -1) {
+                state.kings.splice(isRemovedCheckerKing, 1);
+              }
+            }
+
+            if (state.kings.includes(`${currentPosY}${currentPosX}`)) {
+              let index = state.kings.findIndex(
+                (e) => e === `${currentPosY}${currentPosX}`
+              );
+              kingScorePositions.positions = [];
+              state.kings[index] = `${targetPosY}${targetPosX}`;
             }
           }
 
@@ -179,7 +207,7 @@ export const gameSlice = createSlice({
                 state.currentPlayer,
                 state.board,
                 state.kings,
-                state.kingScorePositions
+                true
               )
             ) {
               if (state.currentPlayer === 1) {
@@ -201,10 +229,6 @@ export const gameSlice = createSlice({
       let a = action.payload;
       state.canGetScore.push(a);
     },
-    setKingScorePos: (state, action) => {
-      let pos = action.payload;
-      state.kingScorePositions.push(pos);
-    },
   },
 });
 
@@ -216,7 +240,6 @@ export const {
   move,
   setCanGetScore,
   makeKing,
-  setKingScorePos,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -1,9 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import {
-  changeCurrentPlayer,
-  makeKing,
   setCanGetScore,
   setCurrentChecker,
   setAvailableMoves,
@@ -36,16 +35,19 @@ function Checker({ color, position }) {
     if (currentPlayer === color) {
       dispatch(setCurrentChecker({ position: position, color: color }));
       dispatch(setAvailableMoves());
+      console.log(canGetScore);
+      console.log(kingScorePositions);
+      console.log(kings);
     }
   }
 
   useEffect(() => {
     if (currentPlayer === color) {
-      kingScorePositions.positions = [];
-      if (checkSquare(position, color, board, kings)) {
+      if (checkSquare(position, color, board, kings, true)) {
         dispatch(setCanGetScore(position));
       }
       console.log(canGetScore);
+      console.log(kings);
     }
   }, [board]);
 
@@ -65,15 +67,15 @@ function Checker({ color, position }) {
           paddingRight: 1,
           cursor: "pointer",
         }}
-        className={`${kings.includes(position) && `king`} ${
-          color === 0 && Number(position[0]) === 7 && `king`
-        } ${color === 1 && Number(position[0]) === 0 && `king`} ${
+        className={`${kings.includes(position) ? `king` : ""} ${
+          color === 0 && Number(position[0]) === 7 ? `king` : ""
+        } ${color === 1 && Number(position[0]) === 0 ? `king` : ""} ${
           color === 0
             ? "checker black-checker"
             : color === 1
             ? "checker white-checker"
             : ""
-        } ${currentPlayer !== color && "not-draggable"}`}
+        } ${currentPlayer !== color ? "not-draggable" : ""}`}
       ></div>
     </div>
   );

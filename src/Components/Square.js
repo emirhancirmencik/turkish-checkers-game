@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
-import Checker from "./Checker";
 import { useDrop } from "react-dnd";
-import {
-  changeCurrentPlayer,
-  setCurrentChecker,
-  move,
-  makeKing,
-  resetCurrentChecker,
-} from "../redux/game/GameSlice";
+import { move, makeKing } from "../redux/game/GameSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
 function Square({ isWhite, checker, index, children, position }) {
   const currentChecker = useSelector((state) => state.game.currentChecker);
   const availableMoves = useSelector((state) => state.game.availableMoves);
-  const scoredChecker = useSelector((state) => state.game.scoredChecker);
   const currentPlayer = useSelector((state) => state.game.currentPlayer);
   const dispatch = useDispatch();
-  const [{ isDropping }, drop] = useDrop(() => ({
+  const [, drop] = useDrop(() => ({
     accept: "checker",
     drop: () => {
       dispatch(move({ x: position[1], y: position[0] }));
@@ -28,8 +19,6 @@ function Square({ isWhite, checker, index, children, position }) {
     if (availableMoves.includes(position)) {
       dispatch(move({ x: position[1], y: position[0] }));
       dispatch(makeKing({ position: position, color: currentPlayer }));
-
-      console.log(currentPlayer);
     }
   }
 
@@ -39,8 +28,8 @@ function Square({ isWhite, checker, index, children, position }) {
       index={index}
       square-position={position}
       className={`square ${
-        availableMoves.includes(position) && "available-square"
-      } ${currentChecker.position === position && "current-square"} ${
+        availableMoves.includes(position) ? "available-square" : ""
+      } ${currentChecker.position === position ? "current-square" : ""} ${
         isWhite === true ? "square-odd" : "square-even"
       }`}
       onClick={() => handleOnClick()}
