@@ -4,8 +4,6 @@ import Square from "./Square";
 
 function Board() {
   const board = useSelector((state) => state.game.board);
-
-  console.log(board);
   return (
     <div className="board-container">
       <div className="board">

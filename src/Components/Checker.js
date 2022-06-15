@@ -10,7 +10,7 @@ import {
 
 import { useDispatch } from "react-redux";
 
-import checkSquare, { kingScorePositions } from "../Game/Game";
+import checkSquare, { availableMovesFunction } from "../Game/Game";
 
 function Checker({ color, position }) {
   const dispatch = useDispatch();
@@ -36,8 +36,6 @@ function Checker({ color, position }) {
       dispatch(setCurrentChecker({ position: position, color: color }));
       dispatch(setAvailableMoves());
       console.log(canGetScore);
-      console.log(kingScorePositions);
-      console.log(kings);
     }
   }
 
@@ -46,8 +44,6 @@ function Checker({ color, position }) {
       if (checkSquare(position, color, board, kings, true)) {
         dispatch(setCanGetScore(position));
       }
-      console.log(canGetScore);
-      console.log(kings);
     }
   }, [board]);
 
