@@ -5,7 +5,6 @@ export let bestMoves = { positions: [] };
 export default function checkSquare(position, color, board, kings, check) {
   let currentPosY = Number(position[0]);
   let currentPosX = Number(position[1]);
-  console.log(kingScorePositions.direction);
   if (!kings.includes(position) && check) {
     if (color === 0) {
       if (currentPosY !== 7) {
@@ -355,7 +354,6 @@ export function findBestMove(
             for (let i = currentPosY; i <= 6; ) {
               if (board[i][currentPosX] === -1) {
                 for (let j = 1; j <= 6 - currentPosX; ) {
-                  console.log(`${i}${currentPosX + j + 1}`);
                   if (board[i][currentPosX + j] === -1) {
                     j++;
                   } else if (board[i][currentPosX + j] === currentPlayer) {
@@ -375,8 +373,6 @@ export function findBestMove(
 
                 for (let j = currentPosX - 1; 1 <= j; ) {
                   if (board[i][j] === -1) {
-                    console.log(`${i}${j - 1}`);
-
                     j--;
                   } else if (board[i][j] === currentPlayer) {
                     j = 0;
@@ -390,7 +386,7 @@ export function findBestMove(
                     j = 0;
                   }
                 }
-                console.log(`c`);
+
                 i++;
               } else {
                 i = 7;
@@ -402,7 +398,6 @@ export function findBestMove(
             for (let i = currentPosY; i >= 1; ) {
               if (board[i][currentPosX] === -1) {
                 for (let j = 1; j <= 6 - currentPosX; ) {
-                  console.log(`${i}${currentPosX + j + 1}`);
                   if (board[i][currentPosX + j] === -1) {
                     j++;
                   } else if (board[i][currentPosX + j] === currentPlayer) {
@@ -422,8 +417,6 @@ export function findBestMove(
 
                 for (let j = currentPosX - 1; 1 <= j; ) {
                   if (board[i][j] === -1) {
-                    console.log(`${i}${j - 1}`);
-
                     j--;
                   } else if (board[i][j] === currentPlayer) {
                     j = 0;
@@ -437,7 +430,7 @@ export function findBestMove(
                     j = 0;
                   }
                 }
-                console.log(`c`);
+
                 i--;
               } else {
                 i = 0;
@@ -451,7 +444,6 @@ export function findBestMove(
             for (let i = currentPosX; i <= 6; ) {
               if (board[currentPosY][i] === -1) {
                 for (let j = 1; j <= 6 - currentPosY; ) {
-                  console.log(`${currentPosY + j + 1}${i}`);
                   if (board[currentPosY + j][i] === -1) {
                     j++;
                   } else if (board[currentPosY + j][i] === currentPlayer) {
@@ -471,8 +463,6 @@ export function findBestMove(
 
                 for (let j = currentPosY - 1; 1 <= j; ) {
                   if (board[j][i] === -1) {
-                    console.log(`${j}${i - 1}`);
-
                     j--;
                   } else if (board[j][i] === currentPlayer) {
                     j = 0;
@@ -486,7 +476,7 @@ export function findBestMove(
                     j = 0;
                   }
                 }
-                console.log(`c`);
+
                 i++;
               } else {
                 i = 7;
@@ -498,7 +488,6 @@ export function findBestMove(
             for (let i = currentPosX; i >= 1; ) {
               if (board[currentPosY][i] === -1) {
                 for (let j = 1; j <= 6 - currentPosY; ) {
-                  console.log(`${currentPosY + j + 1}${i}`);
                   if (board[currentPosY + j][i] === -1) {
                     j++;
                   } else if (board[currentPosY + j][i] === currentPlayer) {
@@ -518,8 +507,6 @@ export function findBestMove(
 
                 for (let j = currentPosY - 1; 1 <= j; ) {
                   if (board[j][i] === -1) {
-                    console.log(`${j}${i - 1}`);
-
                     j--;
                   } else if (board[j][i] === currentPlayer) {
                     j = 0;
@@ -533,7 +520,7 @@ export function findBestMove(
                     j = 0;
                   }
                 }
-                console.log(`c`);
+
                 i--;
               } else {
                 i = 0;
@@ -545,7 +532,6 @@ export function findBestMove(
     } else {
       if (checkSquare(checker, currentPlayer, board, kings, true)) {
         checkerScorePositions.positions.forEach((score) => {
-          console.log(score);
           if (checkSquare(score, currentPlayer, board, kings, true)) {
             moves.positions.push(score);
           }
@@ -555,7 +541,6 @@ export function findBestMove(
   });
 
   let uniqeMoves = [...new Set(moves.positions)];
-  console.log("bestmoves", uniqeMoves);
 
   return uniqeMoves;
 }
@@ -676,5 +661,3 @@ export function fakeMove(
     }
   }
 }
-
-function calculateMove(board, kings) {}

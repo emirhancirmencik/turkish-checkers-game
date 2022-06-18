@@ -10,13 +10,12 @@ import {
 
 import { useDispatch } from "react-redux";
 
-import checkSquare, { availableMovesFunction } from "../Game/Game";
+import checkSquare from "../Game/Game";
 
 function Checker({ color, position }) {
   const dispatch = useDispatch();
   const currentPlayer = useSelector((state) => state.game.currentPlayer);
   const kings = useSelector((state) => state.game.kings);
-  const canGetScore = useSelector((state) => state.game.canGetScore);
   const board = useSelector((state) => state.game.board);
   const [{ isDragging }, drag] = useDrag({
     type: "checker",
@@ -35,7 +34,6 @@ function Checker({ color, position }) {
     if (currentPlayer === color) {
       dispatch(setCurrentChecker({ position: position, color: color }));
       dispatch(setAvailableMoves());
-      console.log(canGetScore);
     }
   }
 

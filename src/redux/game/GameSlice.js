@@ -282,6 +282,28 @@ export const gameSlice = createSlice({
       let a = action.payload;
       state.canGetScore.push(a);
     },
+    resetGame: (state) => {
+      state.board = [
+        [-1, -1, -1, -1, -1, -1, -1, -1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [-1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [-1, -1, -1, -1, -1, -1, -1, -1],
+      ];
+      state.currentPlayer = 1;
+      state.currentChecker = { position: "none", color: "none", king: false };
+      state.availableMoves = [];
+      state.canGetScore = [];
+      state.scoredChecker = "";
+      state.loses = { white: 0, black: 0 };
+      state.kings = [];
+      kingScorePositions.positions = [];
+      checkerScorePositions.positions = [];
+      kingScorePositions.direction = "";
+    },
   },
 });
 
@@ -293,6 +315,7 @@ export const {
   move,
   setCanGetScore,
   makeKing,
+  resetGame,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

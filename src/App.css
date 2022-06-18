@@ -1,6 +1,6 @@
 .board{
-  height: 60vh;
-  width: 60vh;
+  height: 60vh !important;
+  width: 60vh !important;
   content: ' ';
   margin: auto;
   display: flex;
@@ -8,15 +8,37 @@
   border: 5px black solid;
 }
 
+.stats-container{
+  width: 60vh !important;
+  margin: auto;
+}
+
 .row{
-  display: flex;
-  
+  display: flex
+}
+
+.lose-container{
+  width: 60vh;
+}
+
+.current-player{
+  background-color: white;
+  text-align: center;
+  font-size: 3vh;
+  padding-left: 1.5vh;
+  width: 100%;
+}
+
+.black-player{
+  background-color: black;
+  color: white;
 }
 
 .App{
   width: 100vw;
   height: 100vh;
   display:flex;
+  flex-direction: column;
 }
 
 .square{
@@ -40,8 +62,6 @@
   content: '';
   width: 5vh;
   height: 5vh;
-  
-  
   border-radius: 50%;
   margin: auto;
   background: transparent;
@@ -97,7 +117,6 @@
   background-color: rgb(30, 30, 30);
   border: 0.1vh rgb(0, 0, 0) solid;
   position: relative;
- 
 }
 
 .black-checker::after{
@@ -153,4 +172,54 @@
 
 .white-checker.king::before{
   background-color: rgb(115, 114, 29);
+}
+
+.winner-page{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.winner{
+  margin: auto;
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: white;
+  padding: 1vh;
+  font-size: 3vh;
+}
+
+.click:hover{
+  background-color: black;
+  color:white;
+  cursor: pointer;
+}
+
+.black-checker-lose{
+  background-color: rgb(30, 30, 30);
+  position: relative;
+  height: 5vh;
+
+}
+
+.white-checker-lose{
+  background-color: rgb(176, 176, 176);
+  position:relative;
+  height: 5vh;
+  
+}
+
+.lose > div{
+display: flex;
+padding-left: 1.5vh;
+width: 60vh;
+
+}
+
+.lose > .white-checker-lose > .white-checker, .lose > .black-checker-lose >.black-checker{
+  border: none;
+  margin-top: 0.5vh;
+  margin-left: -1.1vh;
+  background-color: transparent;
 }
